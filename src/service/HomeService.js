@@ -56,7 +56,7 @@ export function getBannerData(lat,lon,tmp){
     })
 }
 
-//请求首页推荐商家的函数
+//2.请求首页推荐商家的函数
 export function getHomeSeller(lat, lon, offset, limit){
     return new Promise((resolve,reject)=>{
         axios.get(Api.SELLER_URL,{
@@ -72,7 +72,7 @@ export function getHomeSeller(lat, lon, offset, limit){
             }
         })
         .then(response=>{
-            console.log(response)
+            //console.log(response)
             let result =response.data.items.map(item=>{
                 return{
                     img:handleImage(item.restaurant.image_path,90),
@@ -81,6 +81,8 @@ export function getHomeSeller(lat, lon, offset, limit){
                     recent_order_num:item.restaurant.recent_order_num,
                     distance:item.restaurant.distance,
                     order_lead_time:item.restaurant.order_lead_time,
+                    float_delivery_fee:item.restaurant.float_delivery_fee,
+                    id:item.restaurant.id,
                     activities:item.restaurant.activities?item.restaurant.activities.map(act=>{
                         return{
                             icon_name:act.icon_name,
@@ -91,12 +93,12 @@ export function getHomeSeller(lat, lon, offset, limit){
                     }):null,
                     isShow:false,
                     //piecewise_agent_fee:item.restaurant.piecewise_agent_fee
-                    float_delivery_fee:item.restaurant.float_delivery_fee,
                     recommend:{
                         color:item.restaurant.recommend?item.restaurant.recommend.color:'',
                         reason:item.restaurant.recommend?item.restaurant.recommend.reason:'',
                         image_hash:item.restaurant.recommend.image_hash?handleImage(item.restaurant.recommend.image_hash, 10):''
-                    }
+                    },
+                    delivery_mode:item.restaurant.delivery_mode?item.restaurant.delivery_mode:null,
                 }
             })
             
@@ -107,6 +109,181 @@ export function getHomeSeller(lat, lon, offset, limit){
         })
     })
 }
+
+
+//3.子页面food
+export function getFoodNavData(ent,lon,lat,term){
+    
+    return new Promise((resolve,reject)=>{
+        
+        axios.get(Api.FOOD_URL,{
+            params:{
+                entry_id:ent,
+                longitude:lon,
+                latitude:lat,
+                terminal:term
+            }
+        })
+        .then((response)=>{
+            
+            console.log(response)
+            //let result=resonse.
+        })
+        .catch((error)=>{
+            console.log(12)
+        })
+    })
+    
+}
+
+//4.商家菜单详情
+export function getSellerMenu(id){
+   return new Promise((resolve,reject)=>{
+       axios.get(Api.SELLER_MENU,{
+            params:{
+                restaurant_id:id
+            }
+       })
+       .then(response=>{
+           console.log(response);
+           let result=response.data.map(item=>{
+               return{
+                    description:item.description,
+                    grey_icon_url:handleImage(item.grey_icon_url,90),
+                    icon_url:handleImage(item.icon_url,90),
+                    //选规格
+                    is_selected:item.is_selected,
+                    name:item.name,
+                    type:item.type ,
+                    foods:item.foods.map(foods=>{
+                        return{
+                            activity:foods.activity,
+                            attributes:foods.attributes?foods.attributes:null,
+                            description:foods.description,
+                            img:handleImage(foods.image_path,65),
+                            min_purchase:foods.min_purchase,
+                            month_sales:foods.month_sales,
+                            name:foods.name,
+                            pinyin_name:foods.pinyin_name,
+                            rating:foods.rating,
+                            rating_count:foods.rating_count,
+                            satisfy_count:foods.satisfy_count,
+                            satisfy_rate:foods.satisfy_rate,
+                            //特价商品细化
+                            specfoods:foods.specfoods.map(spe=>{
+                                return{
+                                    price:spe.price,
+                                    original_price:spe.original_price,
+                                    recent_rating:spe.recent_rating
+                                }
+                            }),
+                            /* price:foods.specfoods.price,
+                            original_price:foods.specfoods.original_price,
+                            recent_rating:foods.specfoods.recent_rating, */
+                            //又包含规格和尺寸
+                            specs:foods.specfoods.specs,
+                            tips:foods.tips
+                        }
+
+                    }) 
+               }
+           })
+           resolve(result);
+       })
+       .catch(error=>{
+
+       })
+   })
+}
+
+
+//5.商家详情
+export function getSellerDetail(id,term,lat,lon){
+    return new Promise((resolve,reject)=>{
+        axios.get(Api.SELLER_DETAIL+'/'+id,{
+             params:{
+                 
+                extras: ['activities', 'albums','license','identification','qualification'],
+                terminal:term,
+                latitude:lat,
+                longitude:lon
+             }
+        })
+        .then(response=>{
+            console.log(response)
+            let result ={
+                img:handleImage(response.data.image_path,90),
+                name:response.data.name,
+                rating:response.data.rating,
+                count:response.data.recent_order_num,
+                distance:response.data.distance,
+                time:response.data.order_lead_time,
+                fee:response.data.float_delivery_fee,
+                id:response.data.id,
+                rule_fee:response.data.piecewise_agent_fee,
+                mode:response.data.delivery_mode?response.data.delivery_mode:null,
+                activities:response.data.activities?response.data.activities.map(act=>{
+                    return{
+                        description:act.description,
+                        icon_color:act.icon_color,
+                        icon_name:act.icon_name,
+                        name:act.name,
+                        id:act.id
+                    }
+                }):null
+            }
+            console.log(result)
+            resolve(result);
+        })
+        .catch(error=>{
+ 
+        })
+    })
+ }
+
+//请求初始化位置
+export function getLocation(lat,lon){
+    return new Promise((resolve,reject)=>{
+        axios.get(Api.LOCATION_URL,{
+            params:{
+                latitude:lat,
+                longitude:lon
+            }
+        })
+        .then(response=>{
+            resolve(response.data.name)
+        })
+    })
+}
+
+//搜索地址请求
+export function searchAddressList(keyword,offset,limit,lat,lon){
+    return new Promise((resolve,reject)=>{
+        axios.get(Api.SEARCH_ADDRESS_URL,{
+            params:{
+                keyword,
+                offset,
+                limit,
+                longitude:lon,
+                latitude:lat
+            }
+        })
+        .then(response=>{
+            let addressList=response.data.map(item=>{
+                return{
+                    name: item.name,
+                    lon: item.longitude,
+                    lat: item.latitude,
+                    address: item.address
+                }
+            })
+            resolve(addressList);
+        })
+    })   
+}
+
+
+
 
 
 

@@ -45,7 +45,8 @@ export default {
             this.isDown=NO_TRIGGER;
             this.downInfo="上拉可以加载更多";
             this.imgPath='/static/img/arrow.png';
-        }
+        },
+        
     },
     mounted(){
         //创建页面的滚动式图
@@ -56,7 +57,7 @@ export default {
 				
 			tap: true, //移动端的点击事件
 			
-			//mouseWheel: true, //支持鼠标滚轮事件
+			mouseWheel: true, //支持鼠标滚轮事件
 			
 			scrollbars: true, //滚动条
 			

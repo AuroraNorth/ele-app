@@ -35,6 +35,34 @@ b / 7e / d1890cf73ae6f2adb97caa39de7fcjpeg
 imageMogr/format/webp/thumbnail/!90x90r/gravity/Center/crop/90x90/
 
 
+//发现页面的路径
+//content
+https://h5.ele.me/restapi/member/v1/discover?platform=1&block_index=0&latitude=22.54286&longitude=114.059563
+
+//限时好礼
+https://h5.ele.me/restapi/member/gifts/suggest
+
+//为你推荐
+https://h5.ele.me/restapi/shopping/v1/find/recommendation?latitude=22.54286&longitude=114.059563&offset=0&limit=6
+
+//天天特价
+https://h5.ele.me/restapi/shopping/v1/sale_list_index?type=special_food&latitude=22.54286&longitude=114.059563&params=%7B%7D
+
+
+//首页下面的美食
+https://h5.ele.me/restapi/shopping/v2/foods_page/sift_factors?entry_id=20004689&longitude=113.837884&latitude=22.626024&terminal=h5
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

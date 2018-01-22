@@ -3,7 +3,9 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 import Home from '../pages/home/Home.vue'
+import Address from '../pages/home/Address.vue'
 import Detail from '../pages/home/Detail.vue'
+import Food from '../pages/home/Food.vue'
 import Discover from '../pages/discover/Discover.vue'
 import Order from '../pages/order/Order.vue'
 import Mine from '../pages/mine/Mine.vue'
@@ -16,8 +18,16 @@ export default new Router({
       component: Home,
       children:[
         {
-          path:'detail',
+          path:'detail/:id',
           component:Detail
+        },
+        {
+          path:'food',
+          component:Food
+        },
+        {
+          path:'address',
+          component:Address
         }
       ]
     },

@@ -1,13 +1,14 @@
 <template>
     <ul class="seller-list">
         <li class="title"><h3>-推荐商家-</h3></li>
-        <li class="seller-item one-bottom-px" v-for="(seller,index) in listData" :key="index">
+        
+        <li class="seller-item one-bottom-px" @click="toDetailAction(seller.id)" v-for="(seller,index) in listData" :key="index">    
             <div class="logo">
                 <img :src="seller.img"/>
             </div>
             <div class="info">
                 <h2><span class="brand">品牌</span>{{seller.name}}</h2>
-                <p class="month-sell">{{seller.rating}}<span>月售:{{seller.recent_order_num}}</span></p>
+                <p class="month-sell"> <span>{{seller.rating}}</span><span>月售:{{seller.recent_order_num}}</span> <span class="delivery" v-if="seller.delivery_mode">{{seller.delivery_mode.text}}</span></p>
                 <div class="distance">
                     <div class="left">¥0元起送 | 配送费¥{{seller.float_delivery_fee}}</div>
                     <div class="right">{{seller.distance}}米|{{seller.order_lead_time}}分</div>                   
@@ -24,10 +25,9 @@
                             {{act.description}}
                         </li>
                     </ul>
-                    <span class="btn" @click="showActAction(index)">{{seller.activities.length}}个活动</span>
+                    <span class="btn" @click.stop="showActAction(index)">{{seller.activities.length}}个活动</span>
                 </div>
             </div>
-
         </li>
     </ul>
 </template>
@@ -35,7 +35,7 @@
 <script>
 import {getHomeSeller} from '../../../service/HomeService'
 import CharterIcon from '../../../common/CharterIcon'
-
+import Vuex from 'vuex'
 export default {
     name:'home-list',
     components:{
@@ -50,15 +50,24 @@ export default {
         }
     },
     computed:{
+        /* ...Vuex.mapState(['latitude', 'longitude']), */
+        ...Vuex.mapState({
+            lat:state=>state.location.lat,
+            lon: state=>state.location.lon
+        }),
         offset(){//告诉后台从哪里开始再次请求下一页数据,相当于skip
             return this.listData.length;
 
         }
     },
     methods:{
+        //:to="'/home/detail/'+seller.id"
+        toDetailAction(id){
+            this.$router.push('/home/detail/'+id);
+        },
         requestData(callback){
-            
-            getHomeSeller(22.54286,114.059563,this.offset,this.limit)
+            //调用
+            getHomeSeller(this.lat,this.lon,this.offset,this.limit)
             .then((result)=>{
                 console.log(result)
                 //从第一次进入需要家在第一页数据
@@ -84,12 +93,17 @@ export default {
         }
     },
     mounted(){
-        this.requestData();
+        //监听经度纬度的变化
+        this.$watch('lat',()=>{
+            if(this.lat&&this.lon){
+                this.requestData();
+            }
+        })        
     }
 }
 </script>
 
-<style>
+<style scoped>
 .title{
     text-align:center;
     font-size:12px;
@@ -117,6 +131,25 @@ export default {
     font-size: 14px;
     color: #333;
 }
+.month{
+    overflow:hidden;
+}
+.month>span{
+    float:left;
+}
+.delivery{
+    float:right;
+    display: block;
+    width: 55px;
+    height: 14px;
+    padding-top:2px;
+    line-height:10px;
+    font-size:12px;
+    text-align:center;
+    color:#fff;
+    background-image: linear-gradient(45deg,#0085ff,#0af);
+    transform:scale(0.8);
+}
 .activities{
     position: relative;
 }
@@ -136,7 +169,7 @@ export default {
     display: block;
     width: 0;
     height: 0;
-    border: 5px solid #999;
+    border: 5px solid rgb(155, 155, 155);
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-bottom: 5px solid transparent;
