@@ -2,9 +2,12 @@
 <template>
     <page pageId="discover">
         <app-header title="发现" @goBack="goBackAction()"></app-header>
-        <discover-content></discover-content>
-        <div></div>
-        <discover-recommend></discover-recommend>
+        <div class="iscroll">
+            <div class="inner">
+                <discover-content></discover-content>
+                <discover-recommend></discover-recommend>
+            </div>
+        </div>
     </page>
 </template>
 
@@ -24,13 +27,43 @@ export default {
         //返回上一页
         goBackAction(){
             this.$router.back();
-        }
+        },
+        pageRefresh(){
+            this.pageScroll.refresh();
+        }     
+    },
+    mounted(){
+        //创建页面的滚动式图
+        this.pageScroll=new IScroll('.iscroll',{
+            probeType:3,
+            bounce:true,
+            click: true, //打开点击事件
+				
+			tap: true, //移动端的点击事件
+			
+			mouseWheel: true, //支持鼠标滚轮事件
+			
+			scrollbars: true, //滚动条
+			
+			fadeScrollbars: true,//不滚动时滚动条淡出
+	
+        });
+        //让页面可以滚动
+        this.pageScroll.on('scrollStart',this.pageRefresh);
+        /* ()=>{
+            //pageScroll.refresh();
+            this.pageRefresh;
+        }) */
+            
     }
 }
 </script>
 
-<style>
-
-
+<style scoped>
+.iscroll{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
 </style>
 

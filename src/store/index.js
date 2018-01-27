@@ -5,14 +5,15 @@ import Vuex from 'vuex'
 Vue.use(Vuex);
 
 import locationModule from './location'
-
+import cartCountModule from './count'
 //创建仓库对象
 export default new Vuex.Store({
     //给仓库配置模块
     modules:{
         //key值模块名字：在外部访问，就直接使用这个名字
         // value值模块对象
-        location:locationModule
+        location:locationModule,
+        cart:cartCountModule
     }
 })
 /* const state={

@@ -5,6 +5,7 @@ Vue.use(Router)
 import Home from '../pages/home/Home.vue'
 import Address from '../pages/home/Address.vue'
 import Detail from '../pages/home/Detail.vue'
+import SearchList from '../pages/home/SearchList.vue'
 import Food from '../pages/home/Food.vue'
 import Discover from '../pages/discover/Discover.vue'
 import Order from '../pages/order/Order.vue'
@@ -28,6 +29,10 @@ export default new Router({
         {
           path:'address',
           component:Address
+        },
+        {
+          path:'search',
+          component:SearchList
         }
       ]
     },

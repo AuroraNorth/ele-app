@@ -2,7 +2,7 @@
 <div class="content">
     <div class="blue">
         <div class="log">
-            <img class="left" src="../../../../static/img/log_06.png" alt="">
+            <img class="left2" src="../../../../static/img/log_06.png" alt="">
             <div class="right">
                 <p class="p1">登录/注册</p>
                 <p class="p2"><img src="../../../../static/img/log02_03.png" alt=""><span>登录后享受更多特权</span></p>
@@ -82,7 +82,8 @@ export default {
     right:25px;
     top:23px;
 }
-.left{
+.left2{
+    display: block;
     float:left;
     width: 51px;
     height: 51px;

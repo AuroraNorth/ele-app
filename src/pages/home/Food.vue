@@ -2,7 +2,7 @@
     <div>
         <sub-page pageId="detail">
             <app-header title="美食" @goBack="goBackAction()"></app-header>
-            <food-header></food-header>
+            <food-nav></food-nav>
 
         </sub-page>
         <!-- 装载子页面 -->

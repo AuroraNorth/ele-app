@@ -22,6 +22,14 @@ const actions={
     //因为参数在该方法了接收,第二个参数省略了
     initLocation(module){
         //执行定位
+        /* navigator.geolocation.getCurrentPosition(
+            function(position){
+                console.log(position)
+            },
+            function(error){
+                console.log('error')
+            }
+        ) */
         setTimeout(()=>{
             let lon = '113.844314';
             let lat = '22.631697';

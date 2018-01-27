@@ -125,12 +125,18 @@ export function getFoodNavData(ent,lon,lat,term){
             }
         })
         .then((response)=>{
-            
             console.log(response)
-            //let result=resonse.
+            let result=response.data.map(item=>{
+                return{
+                    id:item.id,
+                    name:item.name,
+                    category_ids:item.restaurant_category_ids
+                }
+            })
+            resolve(result);
         })
         .catch((error)=>{
-            console.log(12)
+            
         })
     })
     
@@ -232,11 +238,11 @@ export function getSellerDetail(id,term,lat,lon){
                     }
                 }):null
             }
-            console.log(result)
+            
             resolve(result);
         })
         .catch(error=>{
- 
+            
         })
     })
  }
@@ -282,9 +288,71 @@ export function searchAddressList(keyword,offset,limit,lat,lon){
     })   
 }
 
+//搜索商家商品
+export function getSellerAndGoods(kw,latitude,longitude,city_id){
+    return new Promise((resolve,reject)=>{
+       axios.get(Api.SEARCH_SELLER,{
+            params:{
+                kw,
+                latitude,
+                longitude,
+                city_id
+            }
+       })
+       .then(response=>{
+           console.log(response)
+           let result={
+              words:response.data.words,
+              restaurants:response.data.restaurants.map(item=>{
+                  return{
+                      distance:item.distance,
+                      fee:item.float_delivery_fee,
+                      img:handleImage(item.image_path,20),
+                      name:item.name,
+                      rating:item.rating,
+                      count:item.recent_order_num,
+                      /* tagName:item.tags?item.tags.name:null,
+                      color:item.tags?item.tags.name_color:null, */
+                      tags:item.tags?item.tags.map(item2=>{
+                          return{
+                            name:item2.name,
+                            color:item2.name_color
+                          }
+                      }):null
+                      //color:item.tags.name_color
+                  }
+              })
+           }
+           console.log(result)
+           resolve(result);
+       })
+       .catch(error=>{
 
+       })
+    })
+}
 
-
-
-
+//热门搜索
+export function getHotSearch(latitude,longitude){
+    return new Promise((resolve,reject)=>{
+        axios.get(Api.HOT_SERRCH,{
+            params:{
+                latitude,
+                longitude
+            }
+        })
+        .then(response=>{
+            console.log(response)
+            let result=response.data.map(item=>{
+                return{
+                    word:item.word
+                }
+            })
+            resolve(result);
+        })
+        .catch(error=>{
+            
+        })
+    })
+}
 

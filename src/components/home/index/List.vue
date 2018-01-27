@@ -1,6 +1,6 @@
 <template>
     <ul class="seller-list">
-        <li class="title"><h3>-推荐商家-</h3></li>
+        <li class="title"><h3 id="reco">-推荐商家-</h3></li>
         
         <li class="seller-item one-bottom-px" @click="toDetailAction(seller.id)" v-for="(seller,index) in listData" :key="index">    
             <div class="logo">
@@ -8,7 +8,7 @@
             </div>
             <div class="info">
                 <h2><span class="brand">品牌</span>{{seller.name}}</h2>
-                <p class="month-sell"> <span>{{seller.rating}}</span><span>月售:{{seller.recent_order_num}}</span> <span class="delivery" v-if="seller.delivery_mode">{{seller.delivery_mode.text}}</span></p>
+                <p class="month-sell"> <list-star :starInfo="seller.rating"></list-star><span>{{seller.rating}}</span><span>月售:{{seller.recent_order_num}}</span> <span class="delivery" v-if="seller.delivery_mode">{{seller.delivery_mode.text}}</span></p>
                 <div class="distance">
                     <div class="left">¥0元起送 | 配送费¥{{seller.float_delivery_fee}}</div>
                     <div class="right">{{seller.distance}}米|{{seller.order_lead_time}}分</div>                   
@@ -35,11 +35,13 @@
 <script>
 import {getHomeSeller} from '../../../service/HomeService'
 import CharterIcon from '../../../common/CharterIcon'
+import Star from '../../../components/home/index/Star'
 import Vuex from 'vuex'
 export default {
     name:'home-list',
     components:{
-        [CharterIcon.name]:CharterIcon
+        [CharterIcon.name]:CharterIcon,
+        [Star.name]:Star
     },
     data(){
         return{
@@ -72,8 +74,12 @@ export default {
                 console.log(result)
                 //从第一次进入需要家在第一页数据
                 //触发滚动视图时加载更多,加载下一页数据
-               
-                this.listData=this.listData.concat(result);
+                if(this.listData){
+                    this.listData=this.listData.concat(result);
+                }else{
+                    this.listData=result;
+                }
+                
                 this.$nextTick(()=>{
                     // 请求完成，执行停止加载更多的动画
                     if(callback){
@@ -94,12 +100,26 @@ export default {
     },
     mounted(){
         //监听经度纬度的变化
-        this.$watch('lat',()=>{
-            if(this.lat&&this.lon){
+        if(this.lat&&this.lon){
+                this.listData=[];
                 this.requestData();
             }
-        })        
+        this.$watch('lat',()=>{
+            if(this.lat&&this.lon){
+                this.listData=[];
+                this.requestData();
+            }
+        });        
     }
+    /* ,
+    activated(){
+        
+        if(this.lat&&this.lon){
+            console.log(222)
+                this.requestData();
+                //this.$router.push('/home');
+        }
+    } */
 }
 </script>
 
@@ -118,6 +138,7 @@ export default {
 }
 .seller-item .logo{
     width: 55px;
+    height: 55px;
 }
 .seller-item .logo img{
     width: 100%;
@@ -131,13 +152,14 @@ export default {
     font-size: 14px;
     color: #333;
 }
-.month{
+.month-sell{
+    width: 100%;
     overflow:hidden;
 }
-.month>span{
+.month-sell>span{
     float:left;
 }
-.delivery{
+.month-sell .delivery{
     float:right;
     display: block;
     width: 55px;
@@ -149,6 +171,7 @@ export default {
     color:#fff;
     background-image: linear-gradient(45deg,#0085ff,#0af);
     transform:scale(0.8);
+    /* margin-left:43px; */
 }
 .activities{
     position: relative;
@@ -202,11 +225,13 @@ export default {
 .distance{
     overflow: hidden;
     margin-top:8px;
+    height: 20px;
+    width: 240px;
 }
 .left{
     float:left;
     color:#666;
-    
+    width: 160px;
 }
 .right{
     float:right;

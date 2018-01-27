@@ -3,6 +3,7 @@ import axios from 'axios'
 import Api from'../api'
 import {handleImage} from '../util/handleImage'
 
+//发现页面的中间内容区
 export function getDiscoverData(plat,bloc,lat,lon){
     //用promise处理异步回调请求(因为异步导致数据返回不出去)
     
@@ -35,6 +36,35 @@ export function getDiscoverData(plat,bloc,lat,lon){
     })
 }
 
-
+//为你推荐
+export function getDiscoverRecommend(latitude,longitude,offset,limit){
+    return new Promise((resolve,reject)=>{
+        axios.get(Api.DISCOVER_RECOMMEND,{
+            params:{
+                latitude,
+                longitude,
+                offset,
+                limit
+            }
+        })
+        .then(response=>{
+            let result=response.data.items.map(item=>{
+                return{
+                    name:item.food.name,
+                    price:item.food.price,
+                    original_price:item.food.original_price?item.food.original_price:null,
+                    satisfy_rate:item.food.satisfy_rate,
+                    restaurant:item.food.restaurant_name,
+                    month_sales:item.food.month_sales,
+                    img:handleImage(item.food.image_path,147)
+                }
+            })
+            resolve(result);
+        })
+        .catch(error=>{
+            
+        })
+    })
+}
 
 

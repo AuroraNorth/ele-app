@@ -4,12 +4,8 @@
             <div class="logo"><img :src="detailData.img"/></div>
             <div class="info">
                 <h2><span class="brand">品牌</span>{{detailData.name}}</h2>
-                <p class="month-sell"> <span>{{detailData.rating}}</span><span>月售:{{detailData.count}}</span> <span class="delivery" v-if="detailData.mode">{{detailData.mode.text}}</span></p>
-                <div class="distance">
-                    <div class="left">¥0元起送 | 配送费¥{{detailData.fee}}</div>
-                    <div class="right">{{detailData.distance}}米|{{detailData.time}}分</div>                   
-                </div>
-                <p class="welcome">欢迎光临，用餐高峰期请提前下...</p>
+                <p class="month-sell"> <span>{{detailData.rating}}</span><span>月售:{{detailData.count}}</span> <span>商家配送</span><span>约{{detailData.time}}分</span> <span>{{detailData.distance}}米</span></p>
+                <p class="welcome">欢迎光临，用餐高峰期请提前下单,谢谢</p>
             </div>
         </div>
         
@@ -59,8 +55,15 @@ export default {
     top:-39px; 
 }
 .info{
-   
+   margin-left: 19px;
    transform:scale(0.9)
+}
+.month-sell{
+    font-size:12px;
+    margin-left: 18px;
+}
+.month-sell span{
+    margin-left:10px;
 }
 .welcome{
     font-size:12px;
@@ -69,5 +72,21 @@ export default {
     text-align:center;
     color:rgb(172, 167, 167);
     margin-top:5px;
+}
+.brand{
+    display: inline-block;
+    width: 26px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    border-radius: 2px;
+    background:#ffee0b;
+    color:#6f3f15;
+    font-size:12px;
+    margin-right:4px;
+}
+.info h2{
+    font-size: 18px;
+    color: #333;
 }
 </style>

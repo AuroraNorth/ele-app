@@ -30,7 +30,7 @@ const BANNER_URL='/restapi/shopping/openapi/entries';
 //首页推荐商家请求接口
 const SELLER_URL = '/restapi/shopping/v3/restaurants';
 
-//发现的内容区
+//发现页面的内容区
 /* 
 ?platform=1
 &block_index=0
@@ -38,6 +38,17 @@ const SELLER_URL = '/restapi/shopping/v3/restaurants';
 longitude=114.059563
 */
 const CONTENT_URL='/restapi/member/v1/discover';
+
+/* 
+发现页面的为你推荐
+https://h5.ele.me
+/restapi/shopping/v1/find/recommendation
+?latitude=22.54286
+&longitude=114.059563
+&offset=0
+&limit=6
+*/
+const DISCOVER_RECOMMEND='/restapi/shopping/v1/find/recommendation'
 
 //home下面的food的nav
 /* 
@@ -87,6 +98,27 @@ keyword=
 */
 const SEARCH_ADDRESS_URL='/restapi/bgs/poi/search_poi_nearby';
 
+/* 
+//搜索商家和商品
+https://h5.ele.me
+/restapi/shopping/v1/typeahead
+?kw=%E7%81%AB%E9%94%85
+&latitude=22.595183
+&longitude=114.309362
+&city_id=11
+*/
+const SEARCH_SELLER='/restapi/shopping/v1/typeahead';
+
+/* 
+热门搜索
+https://h5.ele.me
+/restapi/shopping/v3/hot_search_words
+?latitude=22.595183
+&longitude=114.309362
+*/
+const HOT_SERRCH='/restapi/shopping/v3/hot_search_words';
+
+
 
 
 export default{
@@ -98,7 +130,10 @@ export default{
     SELLER_MENU,
     SELLER_DETAIL,
     LOCATION_URL,
-    SEARCH_ADDRESS_URL
-    
+    SEARCH_ADDRESS_URL,
+    SEARCH_SELLER,
+    HOT_SERRCH,
+    DISCOVER_RECOMMEND
 }
+
 

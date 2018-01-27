@@ -2,7 +2,8 @@
     <nav class="tabs one-top-px">
         <router-link class="tab" v-for="(tabItem,index) in tabsData"
         :key="index" :to="tabItem.path">
-           <img :src="tabItem.url" /><span>{{tabItem.title}}</span>
+           <i class="iconfont" :class="tabItem.url"></i>
+           <span>{{tabItem.title}}</span>
 
         </router-link>
     </nav>
@@ -13,10 +14,10 @@ export default {
     data(){
         return{
             tabsData:[
-                {title:'首页',path:'/home',url:'../../static/img/log_32.png'},
-                {title: '发现', path: '/discover',url:'../../static/img/log_35.png'},
-                {title: '订单', path: '/order',url:'../../static/img/log_37.png'},
-                {title: '我的', path: '/mine',url:'../../static/img/log_40.png'},
+                {title:'首页',path:'/home',url:'icon-icon-test3'},
+                {title: '发现', path: '/discover',url:'icon-icon-test2'},
+                {title: '订单', path: '/order',url:'icon-icon-test'},
+                {title: '我的', path: '/mine',url:'icon-icon-test1'},
             ]
         }
     }
@@ -44,6 +45,18 @@ export default {
         justify-content:center;
         align-items: center;
         background:#fff;
+    }
+    .tabs .tab .iconfont{
+        display: block;
+        width: 20px;
+        height: 20px;
+        font-size:16px;
+        position: relative;
+    }
+    .tabs .tab .iconfont::before{
+        position: absolute;
+        left: 0;
+        top:-16px;
     }
     .tabs .tab span{
         display: block;

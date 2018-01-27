@@ -9,7 +9,10 @@
        <div class="newuser-info">
             <img src="https://fuss10.elemecdn.com/3/c8/45b2ec2855ed55d90c45bf9b07abbpng.png?imageMogr/format/webp/thumbnail/!710x178r/gravity/Center/crop/710x178/"/>
        </div>
-       <home-list ref="list" @list-change="handleListChange"></home-list>
+       <keep-alive>
+           <home-list ref="list" @list-change="handleListChange"></home-list>
+       </keep-alive>
+       
     </page>
 
     <!-- 上拉时，还需要展示搜索框 -->
@@ -26,6 +29,7 @@ import Header from '../../components/home/index/Header.vue'
 import Search from '../../components/home/index/Search.vue'
 import Banner from '../../components/home/index/Banner.vue'
 import List from '../../components/home/index/List.vue'
+import Vuex from 'vuex'
 export default {
     components:{
         [Page.name]:Page,
@@ -39,7 +43,14 @@ export default {
             showSearchBar:false
         }
     },
+    computed:{
+        ...Vuex.mapState({
+            lat:state=>state.location.lat,
+            lon: state=>state.location.lon
+        })
+    },
     methods:{
+
         handleListChange(){
             //刷新页面
             this.$refs.page.pageRefresh();
@@ -61,10 +72,11 @@ export default {
             }
         }
     }
+    
 }
 </script>
 
-<style>
+<style scoped>
 .newuser-info{
     width: 100%;
     box-sizing: border-box;
